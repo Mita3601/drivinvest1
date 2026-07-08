@@ -17,7 +17,7 @@ const MyProducts = () => {
       const { data, error } = await supabase
         .from("investments")
         .select(
-          "*, investment_types(name, price, daily_return, total_return, duration, image_url)",
+          "*, investment_types(name, price, daily_return, total_return, duration, category, cycle_days, total_cycles, image_url)",
         )
         .eq("user_id", user?.id)
         .order("created_at", { ascending: false });
@@ -27,13 +27,47 @@ const MyProducts = () => {
     enabled: !!user?.id,
   });
 
-  const computeNext = (last: string) => {
-    const next = new Date(new Date(last).getTime() + 24 * 3600 * 1000);
-    const diff = next.getTime() - Date.now();
-    if (diff <= 0) return "Imminent";
-    const h = Math.floor(diff / 3600000);
-    const m = Math.floor((diff % 3600000) / 60000);
-    return `${h}h ${m}m`;
+  const computeNext = (inv: any) => {
+    const category = inv.investment_types?.category;
+    const parseDate = (value: any) => {
+      const date = value ? new Date(value) : null;
+      return date && !Number.isNaN(date.getTime()) ? date : null;
+    };
+
+    const startDate = parseDate(inv.start_date) || parseDate(inv.created_at);
+    const lastRewardDate = parseDate(inv.last_reward_date) || startDate;
+    let endDate = parseDate(inv.end_date);
+
+    const buildLabel = (target: Date | null) => {
+      if (!target) return "Imminent";
+      const diff = target.getTime() - Date.now();
+      if (diff <= 0) return "Imminent";
+      const h = Math.floor(diff / 3600000);
+      const m = Math.floor((diff % 3600000) / 60000);
+      return `${h}h ${m}m`;
+    };
+
+    if (category === "O") {
+      if (!endDate && startDate) {
+        endDate = new Date(startDate.getTime() + 21 * 24 * 3600 * 1000);
+      }
+      return buildLabel(endDate);
+    }
+
+    const cycleDays = Number(
+      inv.investment_types?.cycle_days ?? (category === "G" ? 7 : 1),
+    );
+
+    let next: Date | null = null;
+    if (startDate) {
+      next = new Date(startDate.getTime() + cycleDays * 24 * 3600 * 1000);
+    }
+
+    if (lastRewardDate && lastRewardDate.getTime() > startDate?.getTime()!) {
+      next = new Date(lastRewardDate.getTime() + cycleDays * 24 * 3600 * 1000);
+    }
+
+    return buildLabel(next);
   };
 
   return (

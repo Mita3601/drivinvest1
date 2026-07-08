@@ -1,6 +1,7 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
+import { AdminSearchBar } from "@/components/admin/AdminSearchBar";
 import { useState } from "react";
 import { toast } from "@/hooks/use-toast";
 import { Snowflake, Pencil, Star } from "lucide-react";
@@ -22,6 +23,7 @@ const formatCFA = (n: number | string | null | undefined) =>
 
 const AdminUsers = () => {
   const qc = useQueryClient();
+  const [search, setSearch] = useState("");
   const [editing, setEditing] = useState<{
     id: string;
     balance: string;
@@ -100,12 +102,27 @@ const AdminUsers = () => {
     );
   }
 
+  const filtered = (profiles || []).filter((p: AdminProfile) => {
+    if (!search) return true;
+    const q = search.toLowerCase();
+    return (
+      p.full_name?.toLowerCase().includes(q) ||
+      p.email?.toLowerCase().includes(q) ||
+      p.referral_code?.toLowerCase().includes(q)
+    );
+  });
+
   return (
-    <div className="space-y-3">
+    <div className="space-y-4">
+      <AdminSearchBar
+        value={search}
+        onChange={setSearch}
+        placeholder="Rechercher par nom, email ou code parrain..."
+      />
       <p className="text-muted-foreground text-xs">
-        {profiles?.length || 0} utilisateurs
+        {filtered.length} / {profiles?.length || 0} utilisateurs
       </p>
-      {profiles?.map((p: AdminProfile) => (
+      {filtered?.map((p: AdminProfile) => (
         <div
           key={p.id}
           className="rounded-xl bg-secondary border border-border p-4 space-y-3"
@@ -190,6 +207,11 @@ const AdminUsers = () => {
           )}
         </div>
       ))}
+      {filtered?.length === 0 && (
+        <p className="text-center text-sm text-muted-foreground py-8">
+          Aucun utilisateur trouvé
+        </p>
+      )}
     </div>
   );
 };

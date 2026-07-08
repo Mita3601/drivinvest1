@@ -1,6 +1,7 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
+import { AdminSearchBar } from "@/components/admin/AdminSearchBar";
 import { toast } from "@/hooks/use-toast";
 import { useState, useMemo } from "react";
 import { Check, X } from "lucide-react";
@@ -12,6 +13,7 @@ const AdminWithdrawals = () => {
   const queryClient = useQueryClient();
   const [processingId, setProcessingId] = useState<string | null>(null);
   const [filter, setFilter] = useState<Filter>("all");
+  const [search, setSearch] = useState("");
 
   const { data: withdrawals, isLoading } = useQuery({
     queryKey: ["admin_withdrawals"],
@@ -52,6 +54,17 @@ const AdminWithdrawals = () => {
   const filtered = (withdrawals || []).filter(
     (t: any) => filter === "all" || t.status === filter,
   );
+
+  const searched = filtered.filter((t: any) => {
+    if (!search) return true;
+    const q = search.toLowerCase();
+    const user = usersMap?.[t.user_id];
+    return (
+      user?.email?.toLowerCase().includes(q) ||
+      t.amount?.toString().includes(q) ||
+      t.id?.toLowerCase().includes(q)
+    );
+  });
 
   const handleAction = async (id: string, status: "approved" | "rejected") => {
     setProcessingId(id);
@@ -109,10 +122,16 @@ const AdminWithdrawals = () => {
         ))}
       </div>
 
+      <AdminSearchBar
+        value={search}
+        onChange={setSearch}
+        placeholder="Rechercher par email ou montant..."
+      />
+
       <p className="text-muted-foreground text-xs">
-        {filtered.length} retraits
+        {searched.length} / {filtered.length} retraits
       </p>
-      {filtered.map((tx: any) => {
+      {searched.map((tx: any) => {
         const fee = tx.fee_amount ?? Math.round(Number(tx.amount) * 0.15);
         const net = tx.net_amount ?? Number(tx.amount) - fee;
         const user = usersMap?.[tx.user_id];
@@ -189,6 +208,11 @@ const AdminWithdrawals = () => {
           </div>
         );
       })}
+      {searched.length === 0 && (
+        <p className="text-center text-sm text-muted-foreground py-8">
+          Aucun retrait trouvé
+        </p>
+      )}
     </div>
   );
 };

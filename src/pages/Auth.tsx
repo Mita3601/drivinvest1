@@ -134,7 +134,7 @@ const Auth = () => {
       <div className="w-full max-w-sm space-y-6">
         <div className="text-center">
           <h1 className="font-display font-extrabold text-3xl text-gradient-gold">
-            PixelVest
+            Fujitsu
           </h1>
           <p className="text-muted-foreground text-sm mt-2">
             {isLogin ? "Connectez-vous à votre compte" : "Créez votre compte"}

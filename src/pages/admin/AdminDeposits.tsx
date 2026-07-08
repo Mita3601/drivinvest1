@@ -1,6 +1,7 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
+import { AdminSearchBar } from "@/components/admin/AdminSearchBar";
 import { toast } from "@/hooks/use-toast";
 import { useState, useMemo } from "react";
 import { Check, X } from "lucide-react";
@@ -12,6 +13,7 @@ const AdminDeposits = () => {
   const queryClient = useQueryClient();
   const [processingId, setProcessingId] = useState<string | null>(null);
   const [filter, setFilter] = useState<Filter>("all");
+  const [search, setSearch] = useState("");
 
   const { data: allTx, isLoading } = useQuery({
     queryKey: ["admin_all_tx"],
@@ -67,24 +69,71 @@ const AdminDeposits = () => {
       ? deposits
       : deposits.filter((t: any) => t.status === filter);
 
+  const searched = filtered.filter((t: any) => {
+    if (!search) return true;
+    const q = search.toLowerCase();
+    const profile = profileMap.get(t.user_id);
+    return (
+      profile?.email?.toLowerCase().includes(q) ||
+      t.amount?.toString().includes(q) ||
+      t.id?.toLowerCase().includes(q)
+    );
+  });
+
   const handleAction = async (id: string, status: "approved" | "rejected") => {
     setProcessingId(id);
-    const { error } = await supabase
-      .from("transactions")
-      .update({ status, updated_at: new Date().toISOString() })
-      .eq("id", id);
-    if (error) {
-      toast({
-        title: "Erreur",
-        description: error.message,
-        variant: "destructive",
-      });
+
+    if (status === "approved") {
+      // Call RPC to approve deposit and credit balance
+      const { data, error } = await supabase.rpc(
+        "approve_deposit_transaction",
+        { p_tx_id: id },
+      );
+      if (error) {
+        toast({
+          title: "Erreur",
+          description: error.message,
+          variant: "destructive",
+        });
+      } else if (data?.success) {
+        toast({
+          title: "Dépôt validé ✅",
+          description: `${formatCFA(data.amount)} F crédité au compte`,
+        });
+        queryClient.invalidateQueries({ queryKey: ["admin_all_tx"] });
+        queryClient.invalidateQueries({ queryKey: ["admin_profiles"] });
+      } else {
+        toast({
+          title: "Erreur",
+          description: data?.error || "Impossible de valider le dépôt",
+          variant: "destructive",
+        });
+      }
     } else {
-      toast({
-        title: status === "approved" ? "Dépôt validé ✅" : "Dépôt rejeté ❌",
+      // Call RPC to reject deposit
+      const { data, error } = await supabase.rpc("reject_deposit_transaction", {
+        p_tx_id: id,
       });
-      queryClient.invalidateQueries({ queryKey: ["admin_all_tx"] });
+      if (error) {
+        toast({
+          title: "Erreur",
+          description: error.message,
+          variant: "destructive",
+        });
+      } else if (data?.success) {
+        toast({
+          title: "Dépôt rejeté ❌",
+        });
+        queryClient.invalidateQueries({ queryKey: ["admin_all_tx"] });
+      } else {
+        toast({
+          title: "Erreur",
+          description: data?.error || "Impossible de rejeter le dépôt",
+          variant: "destructive",
+        });
+      }
     }
+
     setProcessingId(null);
   };
 
@@ -150,8 +199,16 @@ const AdminDeposits = () => {
         ))}
       </div>
 
-      <p className="text-muted-foreground text-xs">{filtered.length} dépôts</p>
-      {filtered.map((tx: any) => {
+      <AdminSearchBar
+        value={search}
+        onChange={setSearch}
+        placeholder="Rechercher par email ou montant..."
+      />
+
+      <p className="text-muted-foreground text-xs">
+        {searched.length} / {filtered.length} dépôts
+      </p>
+      {searched.map((tx: any) => {
         const profile = profileMap.get(tx.user_id);
         const userEmail = profile?.email || "—";
         const paymentCountry =
@@ -229,6 +286,11 @@ const AdminDeposits = () => {
           </div>
         );
       })}
+      {searched.length === 0 && (
+        <p className="text-center text-sm text-muted-foreground py-8">
+          Aucun dépôt trouvé
+        </p>
+      )}
     </div>
   );
 };

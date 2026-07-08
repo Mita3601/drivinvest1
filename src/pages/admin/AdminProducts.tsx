@@ -1,6 +1,7 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
+import { AdminSearchBar } from "@/components/admin/AdminSearchBar";
 import { toast } from "@/hooks/use-toast";
 import { useState, useEffect } from "react";
 import { Save, Snowflake } from "lucide-react";
@@ -16,6 +17,7 @@ type Row = {
   duration: number;
   is_starter: boolean;
   is_frozen: boolean;
+  category?: string;
 };
 
 const ProductRow = ({ row }: { row: Row }) => {
@@ -91,6 +93,16 @@ const ProductRow = ({ row }: { row: Row }) => {
       <div className="flex items-center justify-between gap-2">
         <p className="font-bold text-foreground text-sm truncate">{row.name}</p>
         <div className="flex items-center gap-2">
+          {row.category === "O" && (
+            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-orange-500/20 text-orange-600">
+              OBLIGATOIRE
+            </span>
+          )}
+          {row.category === "Q" && (
+            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-green-500/20 text-green-600">
+              Q
+            </span>
+          )}
           {row.is_starter && (
             <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-primary/15 text-primary">
               STARTER
@@ -173,13 +185,14 @@ const ProductRow = ({ row }: { row: Row }) => {
 };
 
 const AdminProducts = () => {
+  const [search, setSearch] = useState("");
   const { data, isLoading } = useQuery({
     queryKey: ["admin_investment_types"],
     queryFn: async () => {
       const { data, error } = await supabase
         .from("investment_types")
         .select(
-          "id,name,price,daily_return,total_return,duration,is_starter,is_frozen",
+          "id,name,price,daily_return,total_return,duration,is_starter,is_frozen,category",
         )
         .order("price", { ascending: true });
       if (error) throw error;
@@ -196,15 +209,30 @@ const AdminProducts = () => {
       </div>
     );
 
+  const filtered = (data || []).filter((p) =>
+    p.name.toLowerCase().includes(search.toLowerCase()),
+  );
+
   return (
-    <div className="space-y-3">
+    <div className="space-y-4">
+      <AdminSearchBar
+        value={search}
+        onChange={setSearch}
+        placeholder="Rechercher un produit..."
+      />
       <p className="text-muted-foreground text-xs">
-        {data?.length || 0} produits — modifie le prix et le revenu quotidien.
-        Le revenu total est recalculé automatiquement (revenu/jour × durée).
+        {filtered.length} / {data?.length || 0} produits — modifie le prix et le
+        revenu quotidien. Le revenu total est recalculé automatiquement
+        (revenu/jour × durée).
       </p>
-      {data?.map((row) => (
+      {filtered.map((row) => (
         <ProductRow key={row.id} row={row} />
       ))}
+      {filtered.length === 0 && (
+        <p className="text-center text-sm text-muted-foreground py-8">
+          Aucun produit trouvé
+        </p>
+      )}
     </div>
   );
 };

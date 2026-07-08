@@ -1,6 +1,8 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
+import { CategoryORequiredModal } from "@/components/admin/CategoryORequiredModal";
+import { useHasPurchasedCategoryO } from "@/hooks/useCategoryO";
 import { useState, useMemo } from "react";
 import { toast } from "@/hooks/use-toast";
 import pc1 from "@/assets/pc-vip1.jpg";
@@ -17,12 +19,14 @@ const fmt = (n: number) =>
     maximumFractionDigits: 2,
   });
 
-type Filter = "ALL" | "P" | "G";
+type Filter = "ALL" | "O" | "P" | "Q" | "G";
 
 const Units = () => {
   const queryClient = useQueryClient();
   const [loadingId, setLoadingId] = useState<string | null>(null);
   const [filter, setFilter] = useState<Filter>("ALL");
+  const [showCategoryOModal, setShowCategoryOModal] = useState(false);
+  const { hasPurchasedO } = useHasPurchasedCategoryO();
 
   const { data: types, isLoading } = useQuery({
     queryKey: ["investment_types_v2"],
@@ -43,6 +47,13 @@ const Units = () => {
   }, [types, filter]);
 
   const handleBuy = async (item: any) => {
+    // Check if user can purchase this product
+    const itemCategory = item.category || "P";
+    if (itemCategory !== "O" && !hasPurchasedO) {
+      setShowCategoryOModal(true);
+      return;
+    }
+
     setLoadingId(item.id);
     const { data, error } = await supabase.rpc("buy_investment", {
       p_type_id: item.id,
@@ -63,6 +74,9 @@ const Units = () => {
         queryClient.invalidateQueries({ queryKey: ["profile"] });
         queryClient.invalidateQueries({ queryKey: ["my_investments_count"] });
         queryClient.invalidateQueries({ queryKey: ["team_stats_v2"] });
+        queryClient.invalidateQueries({
+          queryKey: ["has_purchased_category_o"],
+        });
       } else {
         toast({ title: r?.error || "Erreur", variant: "destructive" });
       }
@@ -86,11 +100,22 @@ const Units = () => {
 
   return (
     <div className="pb-24 min-h-screen bg-background">
+      {/* Modal catégorie O */}
+      <CategoryORequiredModal
+        isOpen={showCategoryOModal}
+        onNavigateToCategoryO={() => {
+          setShowCategoryOModal(false);
+          setFilter("O");
+        }}
+      />
+
       {/* Filtres */}
       <div className="sticky top-0 z-10 bg-background/95 backdrop-blur border-b border-border">
-        <div className="flex items-center gap-3 px-4 py-3">
+        <div className="flex items-center gap-3 px-4 py-3 overflow-x-auto">
           {chip("ALL", "Tous")}
+          {chip("O", "Obligatoire 📌")}
           {chip("P", "P")}
+          {chip("Q", "Q")}
           {chip("G", "G")}
         </div>
       </div>
@@ -104,12 +129,17 @@ const Units = () => {
 
         {filtered.map((item, i) => {
           const isG = (item.category || "P") === "G";
-          const cycleLabel = isG
-            ? `${item.total_cycles} Semaine`
-            : `${item.total_cycles} Jour`;
+          const isO = (item.category || "P") === "O";
+          const cycleLabel = isO
+            ? "3 Semaine"
+            : isG
+              ? `${item.total_cycles} Semaine`
+              : `${item.total_cycles} Jour`;
           const yieldLabel = isG
             ? "Revenus Hebdomadaire"
-            : "Quotidien de revenu";
+            : isO
+              ? "Revenu Total"
+              : "Quotidien de revenu";
           const rate =
             item.price > 0
               ? (
@@ -155,14 +185,16 @@ const Units = () => {
                     unit="FCFA"
                     bold
                   />
+                  {!isO && (
+                    <Row
+                      label={yieldLabel}
+                      value={`${fmt(item.daily_return)}`}
+                      unit="FCFA"
+                      bold
+                    />
+                  )}
                   <Row
-                    label={yieldLabel}
-                    value={`${fmt(item.daily_return)}`}
-                    unit="FCFA"
-                    bold
-                  />
-                  <Row
-                    label="Revenu Total"
+                    label={isO ? yieldLabel : "Revenu Total"}
                     value={`${fmt(item.total_return)}`}
                     unit="FCFA"
                     bold
@@ -185,9 +217,11 @@ const Units = () => {
               </div>
 
               <div className="px-3 py-2 border-t border-border flex items-center justify-between">
-                <span className="text-[11px] text-muted-foreground">
-                  Mise récupérée à J+25 · reste = intérêts
-                </span>
+                {!isO && (
+                  <span className="text-[11px] text-muted-foreground">
+                    Mise récupérée à J+25 · reste = intérêts
+                  </span>
+                )}
                 <button
                   disabled={loadingId === item.id || item.is_frozen}
                   onClick={() => handleBuy(item)}

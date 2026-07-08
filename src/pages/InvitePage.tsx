@@ -6,7 +6,9 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 const QRCode = ({ value }: { value: string }) => {
   const src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(value)}`;
-  return <img src={src} alt="QR" width={140} height={140} className="rounded-lg" />;
+  return (
+    <img src={src} alt="QR" width={140} height={140} className="rounded-lg" />
+  );
 };
 
 const InvitePage = () => {
@@ -29,7 +31,9 @@ const InvitePage = () => {
         >
           <ArrowLeft className="w-5 h-5 text-foreground" />
         </button>
-        <h1 className="font-display font-bold text-lg text-foreground">Invitateur Des Amis</h1>
+        <h1 className="font-display font-bold text-lg text-foreground">
+          Invitateur Des Amis
+        </h1>
       </div>
 
       <div className="px-4 pt-5 space-y-6">
@@ -63,7 +67,11 @@ const InvitePage = () => {
           <div className="grid grid-cols-[1fr_auto] gap-4 items-start">
             <div className="space-y-3">
               <div className="rounded-xl bg-primary/10 border border-primary/20 px-4 py-3 font-display font-bold text-foreground text-lg tracking-widest text-center">
-                {isLoading ? <Skeleton className="h-6 w-32 mx-auto" /> : refCode}
+                {isLoading ? (
+                  <Skeleton className="h-6 w-32 mx-auto" />
+                ) : (
+                  refCode
+                )}
               </div>
               <button
                 onClick={() => copy(refCode, "Code")}
@@ -90,26 +98,38 @@ const InvitePage = () => {
             <li className="flex gap-3">
               <span className="w-1.5 h-1.5 mt-2 rounded-full bg-primary shrink-0" />
               <span>
-                Partagez votre privilège d'invitation avec des amis pour qu'ils rejoignent et obtenez un{" "}
-                <span className="text-primary font-bold">bonus d'invitation</span> et gagnez une commission.
+                Partagez votre privilège d'invitation avec des amis pour qu'ils
+                rejoignent et obtenez un{" "}
+                <span className="text-primary font-bold">
+                  bonus d'invitation
+                </span>{" "}
+                et gagnez une commission.
               </span>
             </li>
             <li className="flex gap-3">
               <span className="w-1.5 h-1.5 mt-2 rounded-full bg-primary shrink-0" />
               <span>
-                Gagnez <span className="text-primary font-bold">5% de commission</span> sur vos directs (niveau A).
+                Gagnez{" "}
+                <span className="text-primary font-bold">
+                  20% de commission
+                </span>{" "}
+                sur vos directs (niveau A).
               </span>
             </li>
             <li className="flex gap-3">
               <span className="w-1.5 h-1.5 mt-2 rounded-full bg-primary shrink-0" />
               <span>
-                Supplémentaire <span className="text-primary font-bold">2% de commission</span> sur les parrainages de niveau second (niveau B).
+                Supplémentaire{" "}
+                <span className="text-primary font-bold">3% de commission</span>{" "}
+                sur les parrainages de niveau second (niveau B).
               </span>
             </li>
             <li className="flex gap-3">
               <span className="w-1.5 h-1.5 mt-2 rounded-full bg-primary shrink-0" />
               <span>
-                Supplémentaire <span className="text-primary font-bold">1% de commission</span> sur les parrainages de troisième niveau (niveau C).
+                Supplémentaire{" "}
+                <span className="text-primary font-bold">1% de commission</span>{" "}
+                sur les parrainages de troisième niveau (niveau C).
               </span>
             </li>
           </ul>

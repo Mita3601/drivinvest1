@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 const SupportPage = () => {
   const navigate = useNavigate();
   const telegramGroupLink = "https://t.me/+S0z1QeF2z4o4OGI8";
-  const telegramSupportLink = "https://t.me/U_Service_client_Pixelvest";
+  const telegramSupportLink = "https://t.me/U_Service_client_Fujitsu";
 
   return (
     <div className="pb-24 space-y-5">
@@ -50,7 +50,7 @@ const SupportPage = () => {
               Service client Telegram
             </p>
             <p className="text-muted-foreground text-xs">
-              U_Service_client_Pixelvest
+              U_Service_client_Fujitsu
             </p>
           </div>
           <span className="text-foreground font-bold text-xs">OUVRIR →</span>
@@ -87,7 +87,7 @@ const SupportPage = () => {
               Service client Telegram
             </p>
             <p className="text-muted-foreground text-xs">
-              U_Service_client_Pixelvest
+              U_Service_client_Fujitsu
             </p>
           </div>
           <span className="text-foreground font-bold text-xs">OUVRIR →</span>

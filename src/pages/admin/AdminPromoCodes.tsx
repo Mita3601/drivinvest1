@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
+import { AdminSearchBar } from "@/components/admin/AdminSearchBar";
 import { toast } from "@/hooks/use-toast";
 import {
   Select,
@@ -33,6 +34,7 @@ const typeLabels: Record<string, string> = {
 
 const AdminPromoCodes = () => {
   const qc = useQueryClient();
+  const [search, setSearch] = useState("");
   const [code, setCode] = useState("");
   const [type, setType] = useState<
     "balance" | "product_discount" | "deposit_bonus"
@@ -165,6 +167,13 @@ const AdminPromoCodes = () => {
 
       <div>
         <h2 className="font-bold text-sm mb-3">Codes existants</h2>
+        <div className="mb-3">
+          <AdminSearchBar
+            value={search}
+            onChange={setSearch}
+            placeholder="Rechercher par code..."
+          />
+        </div>
         {isLoading ? (
           <div className="space-y-2">
             {Array.from({ length: 3 }).map((_, i) => (
@@ -173,45 +182,52 @@ const AdminPromoCodes = () => {
           </div>
         ) : (
           <div className="space-y-2">
-            {(codes || []).map((c: any) => {
-              const expired = new Date(c.ends_at) < new Date();
-              const exhausted = c.uses_count >= c.max_users;
-              return (
-                <div
-                  key={c.id}
-                  className="bg-card border border-border rounded-xl p-3"
-                >
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <p className="font-display font-bold tracking-wider">
-                        {c.code}
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        {typeLabels[c.type]} :{" "}
-                        <span className="text-foreground font-bold">
-                          {c.value}
-                        </span>
-                      </p>
+            {(codes || [])
+              .filter((c: any) =>
+                c.code.toLowerCase().includes(search.toLowerCase()),
+              )
+              .map((c: any) => {
+                const expired = new Date(c.ends_at) < new Date();
+                const exhausted = c.uses_count >= c.max_users;
+                return (
+                  <div
+                    key={c.id}
+                    className="bg-card border border-border rounded-xl p-3"
+                  >
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <p className="font-display font-bold tracking-wider">
+                          {c.code}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          {typeLabels[c.type]} :{" "}
+                          <span className="text-foreground font-bold">
+                            {c.value}
+                          </span>
+                        </p>
+                      </div>
+                      <span
+                        className={`text-xs px-2 py-1 rounded-md font-bold ${expired || exhausted ? "bg-muted text-muted-foreground" : "bg-success/15 text-success"}`}
+                      >
+                        {expired ? "Expiré" : exhausted ? "Épuisé" : "Actif"}
+                      </span>
                     </div>
-                    <span
-                      className={`text-xs px-2 py-1 rounded-md font-bold ${expired || exhausted ? "bg-muted text-muted-foreground" : "bg-success/15 text-success"}`}
-                    >
-                      {expired ? "Expiré" : exhausted ? "Épuisé" : "Actif"}
-                    </span>
-                  </div>
-                  <div className="grid grid-cols-3 gap-2 text-xs mt-2 text-muted-foreground">
-                    <div>Du {fmtDateTime(c.starts_at)}</div>
-                    <div>Au {fmtDateTime(c.ends_at)}</div>
-                    <div>
-                      Utilisé: {c.uses_count}/{c.max_users}
+                    <div className="grid grid-cols-3 gap-2 text-xs mt-2 text-muted-foreground">
+                      <div>Du {fmtDateTime(c.starts_at)}</div>
+                      <div>Au {fmtDateTime(c.ends_at)}</div>
+                      <div>
+                        Utilisé: {c.uses_count}/{c.max_users}
+                      </div>
                     </div>
                   </div>
-                </div>
-              );
-            })}
-            {(!codes || codes.length === 0) && (
+                );
+              })}
+            {(!codes ||
+              codes.filter((c: any) =>
+                c.code.toLowerCase().includes(search.toLowerCase()),
+              ).length === 0) && (
               <p className="text-center text-sm text-muted-foreground py-6">
-                Aucun code
+                Aucun code trouvé
               </p>
             )}
           </div>

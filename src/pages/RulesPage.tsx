@@ -6,10 +6,10 @@ const rules = [
   "Le solde est crédité uniquement après validation de la preuve de paiement par l'administration.",
   "Les revenus quotidiens sont distribués automatiquement chaque jour sur votre solde.",
   "Le retrait est fixé à 2 200 FCFA. Des frais de 18% sont appliqués sur chaque retrait.",
-  "Tout utilisateur peut parrainer d'autres membres et recevoir des commissions sur 3 niveaux : 20%, 5%, 1%.",
+  "Tout utilisateur peut parrainer d'autres membres et recevoir des commissions sur 3 niveaux : 20%, 3%, 1%.",
   "Les investissements sont d'une durée fixe de 180 jours. Aucun remboursement anticipé n'est possible.",
   "Tout comportement frauduleux entraînera la suspension immédiate du compte sans préavis.",
-  "PixelVest se réserve le droit de modifier les conditions d'utilisation à tout moment.",
+  "Fujitsu se réserve le droit de modifier les conditions d'utilisation à tout moment.",
   "En utilisant la plateforme, vous acceptez l'intégralité de ces conditions.",
 ];
 

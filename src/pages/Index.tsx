@@ -26,7 +26,7 @@ import pc6 from "@/assets/pc-vip6.jpg";
 import teamImg from "@/assets/pc-team.jpg";
 
 const slides = [
-  { src: bannerImg, label: "PixelVest" },
+  { src: bannerImg, label: "Fujitsu" },
   { src: pc1, label: "Fujitsu Lifebook" },
   { src: pc2, label: "Fujitsu Celsius" },
   { src: pc3, label: "Fujitsu Esprimo" },

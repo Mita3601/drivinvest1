@@ -195,16 +195,17 @@ Deno.serve(async (req) => {
       payload.data && typeof payload.data === "object"
         ? (payload.data as Record<string, unknown>)
         : {};
+    const statusFieldRaw =
+      payload.statut ??
+      payload.status ??
+      payloadData.statut ??
+      payloadData.status;
     const statusField =
-      typeof payload.statut === "string"
-        ? payload.statut
-        : typeof payload.status === "string"
-          ? payload.status
-          : typeof payloadData.statut === "string"
-            ? payloadData.statut
-            : typeof payloadData.status === "string"
-              ? payloadData.status
-              : undefined;
+      typeof statusFieldRaw === "string"
+        ? statusFieldRaw
+        : typeof statusFieldRaw === "boolean"
+          ? statusFieldRaw
+          : undefined;
     const paymentUrl =
       typeof payload.url === "string"
         ? payload.url

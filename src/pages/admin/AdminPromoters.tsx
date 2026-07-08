@@ -1,6 +1,7 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
+import { AdminSearchBar } from "@/components/admin/AdminSearchBar";
 import { toast } from "@/hooks/use-toast";
 import { useState } from "react";
 import { Star, Gift, UserPlus } from "lucide-react";
@@ -9,6 +10,7 @@ const formatCFA = (n: number) => n.toLocaleString("fr-FR");
 
 const AdminPromoters = () => {
   const qc = useQueryClient();
+  const [search, setSearch] = useState("");
   const [grantingFor, setGrantingFor] = useState<string | null>(null);
   const [productId, setProductId] = useState<string>("");
 
@@ -85,6 +87,18 @@ const AdminPromoters = () => {
   const promoters = (profiles || []).filter((p: any) => p.is_promoter);
   const others = (profiles || []).filter((p: any) => !p.is_promoter);
 
+  const filterBySearch = (items: any[]) =>
+    items.filter((p: any) => {
+      const q = search.toLowerCase();
+      return (
+        p.full_name?.toLowerCase().includes(q) ||
+        p.email?.toLowerCase().includes(q)
+      );
+    });
+
+  const filteredPromoters = filterBySearch(promoters);
+  const filteredOthers = filterBySearch(others);
+
   const Card = ({ p }: { p: any }) => (
     <div className="rounded-xl bg-secondary border border-border p-4 space-y-2">
       <div className="flex items-center gap-3">
@@ -152,26 +166,37 @@ const AdminPromoters = () => {
 
   return (
     <div className="space-y-4">
+      <AdminSearchBar
+        value={search}
+        onChange={setSearch}
+        placeholder="Rechercher par nom ou email..."
+      />
       <div>
         <p className="text-primary text-xs font-bold uppercase mb-2">
-          Promoteurs actifs ({promoters.length})
+          Promoteurs actifs ({filteredPromoters.length} / {promoters.length})
         </p>
         <div className="space-y-3">
-          {promoters.length ? (
-            promoters.map((p: any) => <Card key={p.id} p={p} />)
+          {filteredPromoters.length ? (
+            filteredPromoters.map((p: any) => <Card key={p.id} p={p} />)
           ) : (
-            <p className="text-muted-foreground text-xs">Aucun promoteur.</p>
+            <p className="text-muted-foreground text-xs">
+              Aucun promoteur trouvé.
+            </p>
           )}
         </div>
       </div>
       <div>
         <p className="text-muted-foreground text-xs font-bold uppercase mb-2">
-          Autres utilisateurs ({others.length})
+          Autres utilisateurs ({filteredOthers.length} / {others.length})
         </p>
         <div className="space-y-3">
-          {others.map((p: any) => (
-            <Card key={p.id} p={p} />
-          ))}
+          {filteredOthers.length ? (
+            filteredOthers.map((p: any) => <Card key={p.id} p={p} />)
+          ) : (
+            <p className="text-muted-foreground text-xs">
+              Aucun utilisateur trouvé.
+            </p>
+          )}
         </div>
       </div>
     </div>

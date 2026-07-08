@@ -51,7 +51,7 @@ const HistoryPage = () => {
           <ArrowLeft className="w-5 h-5" />
         </button>
         <h1 className="absolute left-0 right-0 text-center font-display font-bold text-base text-foreground pointer-events-none">
-          Historique
+          Historique Dépôts & Retraits
         </h1>
       </div>
 
