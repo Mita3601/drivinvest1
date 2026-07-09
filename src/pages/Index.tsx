@@ -11,6 +11,14 @@ import {
   CheckCircle2,
   Wallet,
 } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { useNavigate } from "react-router-dom";
 import { useProfile } from "@/hooks/useProfile";
 import { supabase } from "@/integrations/supabase/client";
@@ -100,6 +108,7 @@ const Index = () => {
     { label: "Code Promo", icon: Ticket, path: "/promo" },
   ];
   const balance = Number(profile?.balance ?? 0);
+  const [showTelegramModal, setShowTelegramModal] = useState(true);
   const formatCFA = (value: number) => value.toLocaleString("fr-FR");
 
   return (
@@ -176,6 +185,41 @@ const Index = () => {
           );
         })}
       </div>
+
+      <Dialog open={showTelegramModal} onOpenChange={setShowTelegramModal}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Rejoignez notre canal Telegram</DialogTitle>
+            <DialogDescription>
+              Rejoignez notre groupe Telegram pour recevoir les dernières
+              annonces, offres et informations directement dans votre chat.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-2">
+            <p className="text-sm text-foreground">
+              Cliquez sur le bouton ci-dessous pour accéder à notre groupe
+              Telegram.
+            </p>
+            <a
+              href="https://t.me/+rddahv5cVsI3MDhk"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex w-full items-center justify-center rounded-xl bg-primary px-4 py-3 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90"
+            >
+              Rejoindre Telegram
+            </a>
+          </div>
+          <DialogFooter>
+            <button
+              type="button"
+              onClick={() => setShowTelegramModal(false)}
+              className="inline-flex items-center justify-center rounded-xl bg-secondary px-4 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-secondary/90"
+            >
+              Fermer
+            </button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       {/* Tâches quotidiennes */}
       <div className="px-4">

@@ -113,7 +113,7 @@ const Units = () => {
       <div className="sticky top-0 z-10 bg-background/95 backdrop-blur border-b border-border">
         <div className="flex items-center gap-3 px-4 py-3 overflow-x-auto">
           {chip("ALL", "Tous")}
-          {chip("O", "Obligatoire 📌")}
+          {chip("O", "O 📌")}
           {chip("P", "P")}
           {chip("Q", "Q")}
           {chip("G", "G")}
@@ -147,7 +147,10 @@ const Units = () => {
                   100
                 ).toFixed(1)
               : "0";
-          const tag = item.tag as string | null;
+          const displayedName = isO
+            ? item.name.replace(/^Pack Obligatoire/i, "pack requis")
+            : item.name;
+          const badgeLabel = isO ? "Requis" : (item.tag as string | null);
 
           return (
             <div
@@ -166,9 +169,9 @@ const Units = () => {
                     width={512}
                     height={512}
                   />
-                  {tag && (
+                  {badgeLabel && (
                     <span className="absolute -top-1 -left-1 bg-primary text-primary-foreground text-[10px] font-bold px-2 py-1 rounded-tl-xl rounded-br-xl shadow">
-                      {tag}
+                      {badgeLabel}
                     </span>
                   )}
                   {isG && (
@@ -217,11 +220,6 @@ const Units = () => {
               </div>
 
               <div className="px-3 py-2 border-t border-border flex items-center justify-between">
-                {!isO && (
-                  <span className="text-[11px] text-muted-foreground">
-                    Mise récupérée à J+25 · reste = intérêts
-                  </span>
-                )}
                 <button
                   disabled={loadingId === item.id || item.is_frozen}
                   onClick={() => handleBuy(item)}

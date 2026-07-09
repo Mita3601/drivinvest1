@@ -31,10 +31,8 @@ const AboutPage = () => {
           Afrique.
         </p>
         <p className="text-muted-foreground text-sm leading-relaxed">
-          Chaque investisseur peut participer à la chaîne de valeur tech et
-          recevoir des revenus quotidiens garantis pendant 180 jours. Notre
-          système de parrainage à 3 niveaux permet également de maximiser vos
-          gains en invitant votre réseau.
+          Notre système de parrainage à 3 niveaux permet de maximiser vos gains
+          en invitant votre réseau.
         </p>
         <p className="text-muted-foreground text-sm leading-relaxed">
           Sécurité, transparence et rentabilité sont nos maîtres mots. Rejoignez
