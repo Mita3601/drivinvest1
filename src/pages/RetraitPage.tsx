@@ -10,9 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 const countries = [
   { id: "Cameroun", label: "Cameroun" },
   { id: "CI", label: "CI" },
-  { id: "BF", label: "BF" },
   { id: "Benin", label: "Benin" },
-  { id: "Senegal", label: "Senegal" },
 ];
 
 const operatorMap: Record<string, Array<{ id: string; label: string }>> = {
@@ -26,19 +24,9 @@ const operatorMap: Record<string, Array<{ id: string; label: string }>> = {
     { id: "mtn", label: "MTN" },
     { id: "orange", label: "Orange" },
   ],
-  BF: [
-    { id: "orange", label: "Orange" },
-    { id: "wave", label: "Wave" },
-    { id: "moov", label: "Moov" },
-  ],
   Benin: [
     { id: "orange", label: "Orange" },
     { id: "mtn", label: "MTN" },
-  ],
-  Senegal: [
-    { id: "orange", label: "Orange" },
-    { id: "freemoney", label: "Freemoney" },
-    { id: "expresso", label: "Expresso" },
   ],
 };
 

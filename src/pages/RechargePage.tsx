@@ -10,16 +10,14 @@ const quickAmounts = [2500, 5000, 10000, 25000, 50000, 100000];
 const countries = [
   { id: "Cameroun", label: "Cameroun", flag: "🇨🇲" },
   { id: "Cote d'Ivoire", label: "Côte d'Ivoire", flag: "🇨🇮" },
-  { id: "Burkina Faso", label: "Burkina Faso", flag: "🇧🇫" },
   { id: "Benin", label: "Bénin", flag: "🇧🇯" },
-  { id: "Senegal", label: "Sénégal", flag: "🇸🇳" },
 ];
 
 const RechargePage = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [amount, setAmount] = useState<number | null>(null);
-  const [country, setCountry] = useState<string>("Burkina Faso");
+  const [country, setCountry] = useState<string>("Cameroun");
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
 

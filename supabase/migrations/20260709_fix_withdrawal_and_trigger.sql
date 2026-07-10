@@ -78,12 +78,8 @@ BEGIN
     IF NOT (v_method IN ('orange', 'mtn')) THEN RETURN json_build_object('success', false, 'error', 'Opérateur invalide pour Cameroun'); END IF;
   ELSIF v_country = 'CI' THEN
     IF NOT (v_method IN ('wave', 'moov', 'mtn', 'orange')) THEN RETURN json_build_object('success', false, 'error', 'Opérateur invalide pour CI'); END IF;
-  ELSIF v_country = 'BF' THEN
-    IF NOT (v_method IN ('orange', 'wave', 'moov')) THEN RETURN json_build_object('success', false, 'error', 'Opérateur invalide pour BF'); END IF;
   ELSIF v_country = 'Benin' THEN
     IF NOT (v_method IN ('orange', 'mtn')) THEN RETURN json_build_object('success', false, 'error', 'Opérateur invalide pour Benin'); END IF;
-  ELSIF v_country = 'Senegal' THEN
-    IF NOT (v_method IN ('orange', 'freemoney', 'expresso')) THEN RETURN json_build_object('success', false, 'error', 'Opérateur invalide pour Senegal'); END IF;
   ELSE
     RETURN json_build_object('success', false, 'error', 'Pays invalide');
   END IF;

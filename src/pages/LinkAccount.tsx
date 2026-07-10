@@ -9,44 +9,103 @@ import { toast } from "@/hooks/use-toast";
 const countries = [
   { id: "Cameroun", label: "Cameroun" },
   { id: "CI", label: "Côte d'Ivoire" },
-  { id: "BF", label: "Burkina Faso" },
   { id: "Benin", label: "Bénin" },
-  { id: "Senegal", label: "Sénégal" },
 ];
 
 const operatorMap: Record<string, Array<{ id: string; label: string }>> = {
-  Cameroun: [{ id: "orange", label: "Orange" }, { id: "mtn", label: "MTN" }],
-  CI: [
-    { id: "wave", label: "Wave" }, { id: "moov", label: "Moov" },
-    { id: "mtn", label: "MTN" }, { id: "orange", label: "Orange" },
-  ],
-  BF: [{ id: "orange", label: "Orange" }, { id: "wave", label: "Wave" }, { id: "moov", label: "Moov" }],
-  Benin: [{ id: "orange", label: "Orange" }, { id: "mtn", label: "MTN" }],
-  Senegal: [
+  Cameroun: [
     { id: "orange", label: "Orange" },
-    { id: "freemoney", label: "Freemoney" },
-    { id: "expresso", label: "Expresso" },
+    { id: "mtn", label: "MTN" },
+  ],
+  CI: [
+    { id: "wave", label: "Wave" },
+    { id: "moov", label: "Moov" },
+    { id: "mtn", label: "MTN" },
+    { id: "orange", label: "Orange" },
+  ],
+  Benin: [
+    { id: "orange", label: "Orange" },
+    { id: "mtn", label: "MTN" },
   ],
 };
 
 const EmptyIllustration = () => (
   <svg viewBox="0 0 320 240" className="w-64 h-48">
-    <ellipse cx="160" cy="215" rx="130" ry="8" fill="hsl(var(--muted))" opacity="0.5" />
+    <ellipse
+      cx="160"
+      cy="215"
+      rx="130"
+      ry="8"
+      fill="hsl(var(--muted))"
+      opacity="0.5"
+    />
     {/* leaves bg */}
-    <path d="M250 60 Q280 90 260 140 Q250 100 230 90 Z" fill="hsl(var(--primary))" opacity="0.4" />
-    <path d="M240 90 Q265 120 245 165 Q240 130 220 120 Z" fill="hsl(var(--primary))" opacity="0.3" />
+    <path
+      d="M250 60 Q280 90 260 140 Q250 100 230 90 Z"
+      fill="hsl(var(--primary))"
+      opacity="0.4"
+    />
+    <path
+      d="M240 90 Q265 120 245 165 Q240 130 220 120 Z"
+      fill="hsl(var(--primary))"
+      opacity="0.3"
+    />
     {/* card */}
-    <rect x="120" y="120" width="160" height="80" rx="6" fill="hsl(var(--primary))" opacity="0.85" />
-    <rect x="135" y="140" width="50" height="8" rx="2" fill="#fff" opacity="0.9" />
-    <rect x="135" y="155" width="100" height="6" rx="2" fill="#fff" opacity="0.6" />
-    <rect x="135" y="167" width="80" height="6" rx="2" fill="#fff" opacity="0.6" />
+    <rect
+      x="120"
+      y="120"
+      width="160"
+      height="80"
+      rx="6"
+      fill="hsl(var(--primary))"
+      opacity="0.85"
+    />
+    <rect
+      x="135"
+      y="140"
+      width="50"
+      height="8"
+      rx="2"
+      fill="#fff"
+      opacity="0.9"
+    />
+    <rect
+      x="135"
+      y="155"
+      width="100"
+      height="6"
+      rx="2"
+      fill="#fff"
+      opacity="0.6"
+    />
+    <rect
+      x="135"
+      y="167"
+      width="80"
+      height="6"
+      rx="2"
+      fill="#fff"
+      opacity="0.6"
+    />
     {/* person */}
     <circle cx="70" cy="105" r="14" fill="#3d3d5c" />
-    <path d="M55 120 Q55 155 70 160 Q85 155 85 120 Z" fill="hsl(var(--primary))" opacity="0.9" />
+    <path
+      d="M55 120 Q55 155 70 160 Q85 155 85 120 Z"
+      fill="hsl(var(--primary))"
+      opacity="0.9"
+    />
     <rect x="60" y="140" width="20" height="45" fill="#3d3d5c" />
     {/* paper plane */}
-    <path d="M180 60 L230 80 L200 90 L195 115 L180 90 Z" fill="hsl(var(--primary))" />
-    <path d="M180 60 L200 90 L195 115" fill="none" stroke="#fff" strokeWidth="1.5" />
+    <path
+      d="M180 60 L230 80 L200 90 L195 115 L180 90 Z"
+      fill="hsl(var(--primary))"
+    />
+    <path
+      d="M180 60 L200 90 L195 115"
+      fill="none"
+      stroke="#fff"
+      strokeWidth="1.5"
+    />
   </svg>
 );
 
@@ -77,7 +136,11 @@ const LinkAccount = () => {
   const handleSave = async () => {
     if (!user) return;
     if (!country || !operator || !walletNumber) {
-      toast({ title: "Erreur", description: "Remplissez tous les champs.", variant: "destructive" });
+      toast({
+        title: "Erreur",
+        description: "Remplissez tous les champs.",
+        variant: "destructive",
+      });
       return;
     }
     setLoading(true);
@@ -92,7 +155,11 @@ const LinkAccount = () => {
     setLoading(false);
 
     if (error) {
-      toast({ title: "Erreur", description: error.message, variant: "destructive" });
+      toast({
+        title: "Erreur",
+        description: error.message,
+        variant: "destructive",
+      });
       return;
     }
     setSubmitted(true);
@@ -107,7 +174,9 @@ const LinkAccount = () => {
       >
         <ArrowLeft className="w-5 h-5 text-foreground" />
       </button>
-      <h1 className="font-display font-bold text-lg text-foreground">Mon Compte</h1>
+      <h1 className="font-display font-bold text-lg text-foreground">
+        Mon Compte
+      </h1>
     </div>
   );
 
@@ -117,8 +186,12 @@ const LinkAccount = () => {
         <Header />
         <div className="flex flex-col items-center justify-center px-6 text-center gap-4 mt-24">
           <CheckCircle className="w-16 h-16 text-success" />
-          <h2 className="font-display font-bold text-xl text-foreground">Compte lié</h2>
-          <p className="text-muted-foreground text-sm">Vos informations sont enregistrées.</p>
+          <h2 className="font-display font-bold text-xl text-foreground">
+            Compte lié
+          </h2>
+          <p className="text-muted-foreground text-sm">
+            Vos informations sont enregistrées.
+          </p>
           <button
             onClick={() => navigate("/profile")}
             className="bg-primary text-white font-bold py-3 px-8 rounded-full mt-4"
@@ -137,7 +210,9 @@ const LinkAccount = () => {
         <div className="flex-1 flex flex-col items-center justify-center px-6 pt-8 pb-4">
           <EmptyIllustration />
           <p className="text-muted-foreground text-center text-[15px] mt-8 leading-relaxed">
-            Aucun Argent Mobile n'est lié encore<br />Ajouter maintenant
+            Aucun Argent Mobile n'est lié encore
+            <br />
+            Ajouter maintenant
           </p>
         </div>
         <div className="px-8 mt-6 mb-10">
@@ -158,19 +233,29 @@ const LinkAccount = () => {
       <Header />
       <div className="px-4 pt-5 space-y-4">
         <div>
-          <label className="text-xs text-muted-foreground uppercase tracking-wider font-medium">Pays</label>
+          <label className="text-xs text-muted-foreground uppercase tracking-wider font-medium">
+            Pays
+          </label>
           <select
             value={country}
             onChange={(e) => setCountry(e.target.value)}
             className="mt-2 w-full bg-secondary border border-border rounded-xl px-4 py-3 text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary"
           >
-            <option value="" disabled>Sélectionnez un pays</option>
-            {countries.map((c) => <option key={c.id} value={c.id}>{c.label}</option>)}
+            <option value="" disabled>
+              Sélectionnez un pays
+            </option>
+            {countries.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.label}
+              </option>
+            ))}
           </select>
         </div>
 
         <div>
-          <label className="text-xs text-muted-foreground uppercase tracking-wider font-medium">Opérateur</label>
+          <label className="text-xs text-muted-foreground uppercase tracking-wider font-medium">
+            Opérateur
+          </label>
           <div className="mt-2 grid grid-cols-2 gap-2">
             {country ? (
               (operatorMap[country] || []).map((op) => (
@@ -195,7 +280,9 @@ const LinkAccount = () => {
         </div>
 
         <div>
-          <label className="text-xs text-muted-foreground uppercase tracking-wider font-medium">Numéro de réception</label>
+          <label className="text-xs text-muted-foreground uppercase tracking-wider font-medium">
+            Numéro de réception
+          </label>
           <input
             type="tel"
             placeholder="Ex: 07 00 00 00 00"
