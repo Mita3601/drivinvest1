@@ -78,6 +78,7 @@ const App = () => (
               <Route path="/retrait" element={<RetraitPage />} />
               <Route path="/link-account" element={<LinkAccount />} />
               <Route path="/support" element={<SupportPage />} />
+              <Route path="/service-client" element={<SupportPage />} />
               <Route path="/about" element={<AboutPage />} />
               <Route path="/rules" element={<RulesPage />} />
               <Route path="/download" element={<DownloadPage />} />

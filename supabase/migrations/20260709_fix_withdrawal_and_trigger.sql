@@ -12,7 +12,7 @@ BEGIN
   IF public.has_role(auth.uid(), 'admin') 
      OR auth.uid() IS NULL
      OR current_setting('app.internal_call', true) = 'true'
-     OR current_setting('app.internal_call', false) = 'true'
+     OR COALESCE(current_setting('app.internal_call', true), 'false') = 'true'
   THEN
     RETURN NEW;
   END IF;

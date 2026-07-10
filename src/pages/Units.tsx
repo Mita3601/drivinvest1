@@ -113,7 +113,7 @@ const Units = () => {
       <div className="sticky top-0 z-10 bg-background/95 backdrop-blur border-b border-border">
         <div className="flex items-center gap-3 px-4 py-3 overflow-x-auto">
           {chip("ALL", "Tous")}
-          {chip("O", "O 📌")}
+          {chip("O", "P O")}
           {chip("P", "P")}
           {chip("Q", "Q")}
           {chip("G", "G")}

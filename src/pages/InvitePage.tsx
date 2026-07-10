@@ -111,7 +111,7 @@ const InvitePage = () => {
               <span>
                 Gagnez{" "}
                 <span className="text-primary font-bold">
-                  20% de commission
+                  25% de commission
                 </span>{" "}
                 sur vos directs (niveau A).
               </span>
@@ -120,7 +120,7 @@ const InvitePage = () => {
               <span className="w-1.5 h-1.5 mt-2 rounded-full bg-primary shrink-0" />
               <span>
                 Supplémentaire{" "}
-                <span className="text-primary font-bold">3% de commission</span>{" "}
+                <span className="text-primary font-bold">1% de commission</span>{" "}
                 sur les parrainages de niveau second (niveau B).
               </span>
             </li>

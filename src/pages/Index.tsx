@@ -277,9 +277,9 @@ const Index = () => {
                   Fujitsu — Leader mondial
                 </h3>
                 <p className="text-muted-foreground text-xs leading-snug line-clamp-4">
-                  Fujitsu Limited est une multinationale japonaise fondée en
-                  1935, l'un des plus grands fabricants mondiaux d'ordinateurs,
-                  de serveurs et de solutions informatiques d'entreprise.
+                  Fujitsu multinationale fondée en 1936 est l'un des plus grands
+                  fabricants mondiaux d'ordinateurs, de serveurs et de solutions
+                  informatiques d'entreprise.
                 </p>
               </div>
             </div>

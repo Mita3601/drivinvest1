@@ -9,6 +9,7 @@ import {
   Download,
   Wallet,
   History,
+  Headphones,
   User as UserIcon,
 } from "lucide-react";
 import { useProfile } from "@/hooks/useProfile";
@@ -48,13 +49,14 @@ const Profile = () => {
     { label: "Mon Produit", icon: Package, path: "/my-products" },
     { label: "Échangeur Récompense", icon: Gift, path: "/promo" },
     { label: "Invitateur Des Amis", icon: UserPlus, path: "/invite" },
-    { label: "Argent Mobile", icon: Smartphone, path: "/link-account" },
+    { label: "Compte Mobile", icon: Smartphone, path: "/link-account" },
     {
       label: "Historique Dépôts & Retraits",
       icon: History,
       path: "/retrait-history",
     },
     { label: "Paramètres", icon: Settings, path: "/about" },
+    { label: "Service client", icon: Headphones, path: "/service-client" },
     { label: "Téléchargement Application", icon: Download, path: "/download" },
   ];
 

@@ -7,8 +7,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const LEVEL_LABELS = [
-  { key: 1, label: "A Niveau", pct: 20 },
-  { key: 2, label: "B Niveau", pct: 3 },
+  { key: 1, label: "A Niveau", pct: 25 },
+  { key: 2, label: "B Niveau", pct: 1 },
   { key: 3, label: "C Niveau", pct: 1 },
 ];
 

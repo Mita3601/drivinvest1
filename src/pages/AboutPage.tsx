@@ -24,20 +24,28 @@ const AboutPage = () => {
           </h2>
         </div>
         <p className="text-foreground text-sm leading-relaxed">
-          Fujitsu est une plateforme d'investissement innovante spécialisée dans
-          le secteur de la haute technologie : ordinateurs portables, stations
-          de travail et PC gaming nouvelle génération. Notre mission est de
-          démocratiser l'accès aux opportunités d'investissement rentables en
-          Afrique.
+          Fujitsu est une plateforme d'investissement innovante conçue pour
+          mettre à la portée de chacun des opportunités concrètes et rentables
+          dans le secteur de la haute technologie. Nous accompagnons nos clients
+          dans l'acquisition de produits technologiques de pointe, notamment des
+          ordinateurs portables, des stations de travail et des PC gaming
+          nouvelle génération, avec une approche pensée pour offrir à la fois
+          performance, valeur durable et visibilité sur chaque projet.
         </p>
         <p className="text-muted-foreground text-sm leading-relaxed">
-          Notre système de parrainage à 3 niveaux permet de maximiser vos gains
-          en invitant votre réseau.
+          Chez Fujitsu, nous croyons que l'investissement doit être simple,
+          transparent et accessible. C'est pourquoi nous avons mis en place un
+          système de parrainage à 3 niveaux, permettant à chaque membre de
+          développer son réseau, de partager des opportunités et de maximiser
+          ses gains grâce à une communauté dynamique et engagée.
         </p>
         <p className="text-muted-foreground text-sm leading-relaxed">
-          Sécurité, transparence et rentabilité sont nos maîtres mots. Rejoignez
-          la communauté Fujitsu et commencez à faire fructifier votre capital
-          dès aujourd'hui.
+          Notre vision est claire : offrir un environnement sécurisé, fiable et
+          orienté résultats, où chaque utilisateur peut évoluer avec confiance.
+          Sécurité, transparence, rentabilité et accompagnement sont au cœur de
+          notre mission. Rejoignez la communauté Fujitsu et faites grandir votre
+          capital avec une plateforme qui allie innovation, sérieux et potentiel
+          de croissance à long terme.
         </p>
       </div>
     </div>

@@ -5,7 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 
-const quickAmounts = [2500, 5000, 10000, 25000, 50000, 100000];
+const quickAmounts = [1000, 2500, 5000, 10000, 25000, 50000];
 
 const countries = [
   { id: "Cameroun", label: "Cameroun", flag: "🇨🇲" },
@@ -100,10 +100,9 @@ const RechargePage = () => {
       <div className="mx-4 rounded-2xl bg-primary/10 border border-primary/30 p-4 flex gap-3">
         <ShieldCheck className="w-5 h-5 text-primary shrink-0 mt-0.5" />
         <div className="text-xs text-foreground/80 leading-relaxed">
-          Paiement sécurisé via{" "}
-          <span className="font-bold text-primary">MoneyFusion</span>. Vous
-          serez redirigé vers la page de paiement Mobile Money. Votre solde est
-          crédité automatiquement après confirmation.
+          Paiment mobile securise. Vous serez redirigé vers la page de paiement
+          Mobile Money. Votre solde est crédité dans les 5min qui suivent après
+          confirmation.
         </div>
       </div>
 
@@ -192,8 +191,7 @@ const RechargePage = () => {
           )}
         </button>
         <p className="text-center text-[10px] text-muted-foreground mt-2">
-          Si vous ne terminez pas le paiement, la transaction sera marquée comme
-          échouée au bout de 15 minutes.
+          Après dépôt, votre compte sera crédité dans les 5min qui suivent.
         </p>
       </div>
     </div>
