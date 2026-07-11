@@ -44,6 +44,15 @@ const Auth = () => {
         setLoading(false);
         return;
       }
+      if (!refCode.trim()) {
+        toast({
+          title: "Erreur",
+          description: "Le code de parrainage est obligatoire",
+          variant: "destructive",
+        });
+        setLoading(false);
+        return;
+      }
       const { error } = await signUp(email, password, fullName, refCode);
       if (error) {
         toast({
@@ -203,7 +212,7 @@ const Auth = () => {
           {!isLogin && (
             <div>
               <label className="text-xs text-muted-foreground uppercase tracking-wider font-medium">
-                Code parrain (optionnel)
+                Code parrain (Obligatoire)
               </label>
               <input
                 type="text"
