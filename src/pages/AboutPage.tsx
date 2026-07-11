@@ -1,5 +1,6 @@
 import { ArrowLeft, Cpu } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import photoAbout from "../assets/photo-about.png";
 
 const AboutPage = () => {
   const navigate = useNavigate();
@@ -16,9 +17,15 @@ const AboutPage = () => {
           À propos de nous
         </h1>
       </div>
+      <div className="px-4">
+        <img
+          src={photoAbout}
+          alt="À propos de nous"
+          className="w-full rounded-2xl object-cover"
+        />
+      </div>
       <div className="mx-4 rounded-2xl bg-secondary border border-border p-6 space-y-4">
         <div className="flex items-center gap-3">
-          <Cpu className="w-8 h-8 text-primary" />
           <h2 className="font-display font-bold text-xl text-gradient-gold">
             Fujitsu
           </h2>
