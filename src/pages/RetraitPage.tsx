@@ -36,7 +36,7 @@ const RetraitPage = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { data: profile } = useProfile();
-  const [amount, setAmount] = useState("2200");
+  const [amount, setAmount] = useState("0");
   const [operator, setOperator] = useState<string | null>(null);
   const [walletNumber, setWalletNumber] = useState("");
   const [country, setCountry] = useState("");
@@ -212,8 +212,7 @@ const RetraitPage = () => {
           <span className="text-sm text-muted-foreground">FCFA</span>
         </p>
         <p className="text-xs text-muted-foreground mt-2">
-          Pour demander un retrait, votre compte doit afficher au moins CFA{" "}
-          {formatCFA(minWithdrawal)}.
+          Pour demander un retrait minimum CFA {formatCFA(minWithdrawal)}.
         </p>
       </div>
 
