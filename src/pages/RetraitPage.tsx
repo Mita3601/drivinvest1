@@ -62,7 +62,7 @@ const RetraitPage = () => {
 
   const balance = profile?.balance ?? 0;
   const feePercent = settings?.withdrawal_fee_percent ?? 10;
-  const minWithdrawal = settings?.min_withdrawal ?? 2200;
+  const minWithdrawal = settings?.min_withdrawal ?? 1500;
   const numAmount = Number(amount) || 0;
   const fee = Math.round((numAmount * feePercent) / 100);
   const netAmount = numAmount - fee;
@@ -176,7 +176,7 @@ const RetraitPage = () => {
           Demande enregistrée
         </h2>
         <p className="text-muted-foreground text-sm">
-          Le montant du retrait est fixe à 2200 F. Votre retrait sera traité
+          Le montant du retrait est fixe à 1500 F. Votre retrait sera traité
           sous 24h après validation.
         </p>
         <button
