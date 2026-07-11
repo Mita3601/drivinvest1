@@ -5,7 +5,8 @@ import { toast } from "@/hooks/use-toast";
 import { Eye, EyeOff, LogIn, UserPlus, AlertCircle } from "lucide-react";
 
 const Auth = () => {
-  const [isLogin, setIsLogin] = useState(true);
+  const [searchParams] = useSearchParams();
+  const [isLogin, setIsLogin] = useState(!searchParams.get("ref"));
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
@@ -15,7 +16,6 @@ const Auth = () => {
   const [showTermsModal, setShowTermsModal] = useState(false);
   const { signIn, signUp } = useAuth();
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
   const [refCode, setRefCode] = useState(searchParams.get("ref") || "");
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -60,7 +60,7 @@ const Auth = () => {
     }
     setLoading(false);
   };
-
+  console.log("ref:", searchParams.get("ref"), "isLogin:", isLogin);
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4">
       {/* Terms Modal */}
