@@ -8,21 +8,40 @@ const formatCFA = (n: number) => n.toLocaleString("fr-FR");
 
 const AdminReferrals = () => {
   const [search, setSearch] = useState("");
+
   const { data: profiles, isLoading } = useQuery({
     queryKey: ["admin_referral_tree"],
     queryFn: async () => {
       const { data, error } = await supabase
         .from("profiles")
-        .select(
-          "id, full_name, email, referral_code, referred_by, total_deposited",
-        );
+        .select("id, user_id, full_name, email, referral_code, referred_by");
       if (error) throw error;
       return data || [];
     },
   });
 
+  // Récupère tous les montants investis, regroupés par user_id
+  const { data: investMap } = useQuery({
+    queryKey: ["admin_investments_map"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("investments")
+        .select("user_id, amount_invested");
+      if (error) throw error;
+
+      const map = new Map<string, number>();
+      (data || []).forEach((inv: any) => {
+        map.set(
+          inv.user_id,
+          (map.get(inv.user_id) || 0) + Number(inv.amount_invested || 0),
+        );
+      });
+      return map;
+    },
+  });
+
   const nameOf = (p: any) => p.full_name || p.email?.split("@")[0] || "—";
-  const depositOf = (p: any) => Number(p.total_deposited || 0);
+  const depositOf = (p: any) => investMap?.get(p.user_id) || 0;
 
   const tree = useMemo(() => {
     if (!profiles) return [];
@@ -62,7 +81,7 @@ const AdminReferrals = () => {
       })
       .filter((r) => r.total > 0)
       .sort((a, b) => b.levelDeposits.total - a.levelDeposits.total);
-  }, [profiles]);
+  }, [profiles, investMap]);
 
   if (isLoading)
     return (
