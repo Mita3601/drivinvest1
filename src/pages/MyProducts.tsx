@@ -28,46 +28,28 @@ const MyProducts = () => {
   });
 
   const computeNext = (inv: any) => {
-    const category = inv.investment_types?.category;
     const parseDate = (value: any) => {
       const date = value ? new Date(value) : null;
       return date && !Number.isNaN(date.getTime()) ? date : null;
     };
 
     const startDate = parseDate(inv.start_date) || parseDate(inv.created_at);
-    const lastRewardDate = parseDate(inv.last_reward_date) || startDate;
     let endDate = parseDate(inv.end_date);
 
-    const buildLabel = (target: Date | null) => {
-      if (!target) return "Imminent";
-      const diff = target.getTime() - Date.now();
-      if (diff <= 0) return "Imminent";
-      const h = Math.floor(diff / 3600000);
-      const m = Math.floor((diff % 3600000) / 60000);
-      return `${h}h ${m}m`;
-    };
-
-    if (category === "O") {
-      if (!endDate && startDate) {
-        endDate = new Date(startDate.getTime() + 21 * 24 * 3600 * 1000);
-      }
-      return buildLabel(endDate);
+    if (!endDate && startDate) {
+      const category = inv.investment_types?.category;
+      const fallbackDuration =
+        category === "O" ? 21 : category === "G" ? 49 : 60;
+      const duration = fallbackDuration;
+      endDate = new Date(startDate.getTime() + duration * 24 * 3600 * 1000);
     }
 
-    const cycleDays = Number(
-      inv.investment_types?.cycle_days ?? (category === "G" ? 7 : 1),
+    if (!endDate) return "—";
+    const diffDays = Math.max(
+      0,
+      Math.ceil((endDate.getTime() - Date.now()) / (24 * 3600 * 1000)),
     );
-
-    let next: Date | null = null;
-    if (startDate) {
-      next = new Date(startDate.getTime() + cycleDays * 24 * 3600 * 1000);
-    }
-
-    if (lastRewardDate && lastRewardDate.getTime() > startDate?.getTime()!) {
-      next = new Date(lastRewardDate.getTime() + cycleDays * 24 * 3600 * 1000);
-    }
-
-    return buildLabel(next);
+    return diffDays > 0 ? `${diffDays}j restants` : "Échéance atteinte";
   };
 
   return (
@@ -177,9 +159,7 @@ const MyProducts = () => {
                     <>
                       <Clock className="w-4 h-4 text-primary" />
                       <span className="text-muted-foreground">
-                        Prochain versement dans{" "}
-                        {computeNext(inv.last_reward_date)} • {daysLeft}j
-                        restants
+                        {computeNext(inv)}
                       </span>
                     </>
                   )}
