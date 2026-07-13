@@ -8,8 +8,8 @@ import { useNavigate } from "react-router-dom";
 
 const SupportPage = () => {
   const navigate = useNavigate();
-  const telegramGroupLink = "";
-  const telegramSupportLink = "";
+  const telegramGroupLink = "https://t.me/+F2kGpxO9NyM2NTc0";
+  const telegramSupportLink = "https://t.me/U_Service_client_Fujitsu";
 
   return (
     <div className="pb-24 space-y-5">
