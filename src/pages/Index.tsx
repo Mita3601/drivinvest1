@@ -201,7 +201,7 @@ const Index = () => {
               Telegram.
             </p>
             <a
-              href="https://t.me/+rddahv5cVsI3MDhk"
+              href="https://t.me/+F2kGpxO9NyM2NTc0"
               target="_blank"
               rel="noreferrer"
               className="inline-flex w-full items-center justify-center rounded-xl bg-primary px-4 py-3 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90"
